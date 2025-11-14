@@ -1,0 +1,44 @@
+Du ska i denna uppgift bygga ett skalbart bokningssystem med Spring Boot där användare kan boka tider för ett event eller en tjänst.
+Systemet ska kunna hanteras genom Docker och skalas horisontellt.
+
+Bokningar ska minst bestå av:
+* Namn (på person som bokar)
+* E-postadress
+* Datum och tid
+* Antal personer
+* Status (PENDING, CONFIRMED, CANCELLED)
+
+API:et ska hantera följande endpoints:
+- GET /booking för att hämta alla bokningar
+- GET /booking/:id för att hämta en specifik bokning
+- POST /booking för att skapa en ny bokning
+- PUT /booking/:id för att uppdatera en befintlig bokning
+- DELETE /booking/:id för att ta bort en bokning
+
+Vem som helst kan hantera bokningar och du bestämmer själv hur bokningssystemet fungerar.
+Använd sedan Docker för containerization:
+
+1. Dockerisera applikationen
+   - Skapa en Dockerfile för Spring Boot-applikationen
+   - Skapa en docker-compose.yml som startar:
+     - Minst 2 instanser av din applikation
+     - En PostgreSQL-databas
+     - En nginx load balancer som distribuerar trafik mellan instanserna
+
+Hantera alla credentials genom en .env fil och hårdkoda inte några lösenord eller adresser.
+
+
+
+Följande behöver INTE finnas med:
+- Användare
+- Inlogg/registrering
+- Frontend (men bygg gärna en ändå om du vill och har tid)
+- Kubernetes (men testa gärna om du vill)
+
+Bedömning
+    Krav för G:
+    - Använd git för versionshantering
+    - Formatera koden (större misstag ger IG, fråga läraren om du blir osäker)
+    - Följ instruktionerna i beskrivningen
+    - Systemet ska kunna startas med `docker-compose up` och fungera direkt
+    - En image ska kunna byggas direkt genom `Dockerfile`
