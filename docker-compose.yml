@@ -1,0 +1,121 @@
+#version: "3.8"
+
+services:
+  #  Containers
+  postgres:
+    image: postgres:15-alpine
+#    ports:
+#      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+#      - dbdata:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - booking_app1
+      - booking_app2
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  booking_app1:
+    build: .
+    #  image: springdemo:1.0
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SERVER_PORT: 8080
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  booking_app2:
+    build: .
+    #  image: springdemo:1.0
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SERVER_PORT: 8080
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:
+    driver: bridge
+#  web:
+#    image: nginx:alpine
+#    container_name: tutorial_web
+#    ports:
+#      - "8080:80"
+#    depends_on:
+#      - db
+#    networks:
+#      - app_network
+#    volumes:
+#      - ./html:/usr/share/nginx/html:ro
+
+#  app:
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+#      SPRING_DATASOURCE_USERNAME:
+#      SPRING_DATASOURCE_PASSWORD:
+#    depends_on:
+#      - db
+#      - redis
+#    restart: unless-stopped
+
+#  volumes:
+#    dbdata:
+#    postgres-data
+
+#networks:
+#  Custom nätverk (oftast inte nödvändigt)
+
+#volumes:
+#   Named volumes for persistent data
+
+#Indentation matters - use spaces (2 or 4)
+#never tabs
+#format: key: value (colon + space)
+#lists begins with -
+#Don't use :latest
+
+#services:
+#  app: # 2 spaces
+#    image: nginx # 4 spaces
+#    ports:
+#      - "80:80" #list with dash

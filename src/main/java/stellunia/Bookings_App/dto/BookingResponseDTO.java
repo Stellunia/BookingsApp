@@ -5,23 +5,26 @@ import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
 import stellunia.Bookings_App.bookings.Booking;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class BookingResponseDTO extends RepresentationModel<BookingResponseDTO> {
     private String bookingsId;
     private String bookingsName;
     private String bookingsEmail;
-    private String bookingsDate;
+    private LocalDateTime bookingsDate;
     private Integer bookingsAmount;
-    //private String bookingsStatus;
+    private String bookingsStatus;
 
-    public static BookingResponseDTO fromModel (Booking booking) {
+    public static BookingResponseDTO fromModel(Booking booking) {
         return new BookingResponseDTO(
                 booking.getBookingId().toString(),
                 booking.getBookingName(),
                 booking.getBookingEmail(),
                 booking.getBookingDate(),
-                booking.getBookingAmount()
+                booking.getBookingAmount(),
+                booking.getBookingStatus().toString()
         );
     }
 
