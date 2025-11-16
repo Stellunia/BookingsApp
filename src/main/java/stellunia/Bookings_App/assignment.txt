@@ -2,30 +2,30 @@ Du ska i denna uppgift bygga ett skalbart bokningssystem med Spring Boot där an
 Systemet ska kunna hanteras genom Docker och skalas horisontellt.
 
 Bokningar ska minst bestå av:
-* Namn (på person som bokar)
-* E-postadress
-* Datum och tid
-* Antal personer
-* Status (PENDING, CONFIRMED, CANCELLED)
+    * Namn (på person som bokar)
+    * E-postadress
+    * Datum och tid
+    * Antal personer
+    * Status (PENDING, CONFIRMED, CANCELLED)
 
 API:et ska hantera följande endpoints:
-- GET /booking för att hämta alla bokningar
-- GET /booking/:id för att hämta en specifik bokning
-- POST /booking för att skapa en ny bokning
-- PUT /booking/:id för att uppdatera en befintlig bokning
-- DELETE /booking/:id för att ta bort en bokning
+    - GET /bookings för att hämta alla bokningar                - DONE
+    - GET /bookings/:id för att hämta en specifik bokning       - DONE
+    - POST /bookings för att skapa en ny bokning                - DONE
+    - PUT /bookings/:id för att uppdatera en befintlig bokning  - DONE (but still pretty rudimentary)
+    - DELETE /bookings/:id för att ta bort en bokning           - DONE (But still needs to have it move from whatever it's at into a different one)
 
 Vem som helst kan hantera bokningar och du bestämmer själv hur bokningssystemet fungerar.
 Använd sedan Docker för containerization:
 
 1. Dockerisera applikationen
-   - Skapa en Dockerfile för Spring Boot-applikationen
-   - Skapa en docker-compose.yml som startar:
-     - Minst 2 instanser av din applikation
-     - En PostgreSQL-databas
+   - Skapa en Dockerfile för Spring Boot-applikationen          - DONE
+   - Skapa en docker-compose.yml som startar:                   - DONE
+     - Minst 2 instanser av din applikation                     - DONE
+     - En PostgreSQL-databas                                    - DONE
      - En nginx load balancer som distribuerar trafik mellan instanserna
 
-Hantera alla credentials genom en .env fil och hårdkoda inte några lösenord eller adresser.
+Hantera alla credentials genom en .env fil och hårdkoda inte några lösenord eller adresser. - DONE
 
 
 

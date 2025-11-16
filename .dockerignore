@@ -1,0 +1,12 @@
+# .dockerignore
+.git
+.gitignore
+node_modules/
+target/
+*.iml
+*.log
+README.md
+.DS_Store
+.env
+.idea
+.vscode

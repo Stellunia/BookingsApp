@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 //@EqualsAndHashCode(callSuper = true)
@@ -19,32 +21,26 @@ public class Booking {
     @Column(name = "booking_name")
     private String bookingName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "booking_email")
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "booking_date")
-    private String bookingDate;
+    private LocalDateTime bookingDate;
 
     @Column(name = "booking_amount")
     private Integer bookingAmount;
 
     @Column(name = "booking_status")
-    private String bookingStatus;
+    private Status bookingStatus = Status.PENDING;
 
-/*  #Should it have the ability to book from a date to another? Use these, Ig
-    @Column(name = "bookings_from_date")
-    private String bookingsFromDate;
 
-    @Column(name = "bookings_to_date")
-    private String bookingsToDate;
- */
 
     public Booking() {this.bookingId = UUID.randomUUID();}
 
     @Autowired
-    public Booking(String bookingName, String bookingEmail, String bookingDate, Integer bookingAmount, String bookingStatus) {
+    public Booking(String bookingName, String bookingEmail, LocalDateTime bookingDate, Integer bookingAmount) {
         this.bookingId = UUID.randomUUID();
         this.bookingName = bookingName;
         this.bookingEmail = bookingEmail;
@@ -56,7 +52,13 @@ public class Booking {
     @Override
     public String toString() { return super.toString(); }
 
+/*  #Should it have the ability to book from a date to another? Use these, Ig
+    @Column(name = "bookings_from_date")
+    private String bookingsFromDate;
 
+    @Column(name = "bookings_to_date")
+    private String bookingsToDate;
+ */
 
     /* Bokningar ska minst bestå av:
      * Namn (på person som bokar)
