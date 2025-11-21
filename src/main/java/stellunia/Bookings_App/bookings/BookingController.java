@@ -18,6 +18,7 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    // Creates a booking from 4 entries
     @PostMapping("/createBooking")
     public ResponseEntity<Object> createBooking(@RequestParam("bookingName")String bookingName,
                                                 @RequestParam("bookingEmail")String bookingEmail,
@@ -56,6 +57,7 @@ public class BookingController {
         }
     }
 
+    // Updates existing booking, requires all things to be entered again - kind of overdone and should just require amount and date to be updated, but oh well
     @PutMapping("/updateBooking/{id}")
     public ResponseEntity<Object> updateBooking(@RequestParam("bookingId")String bookingId,
                                                 @RequestParam("bookingName")String bookingName,
@@ -78,22 +80,26 @@ public class BookingController {
         }
     }
 
+    // Finds bookings by name
     @GetMapping("/nameBookings")
     public Stream<BookingResponseDTO> getNameBookings(
             @RequestParam("bookingId")String bookingId) {
         return bookingService.getNameBookings(bookingId).stream().map(BookingResponseDTO::fromModel);
     }
 
+    // Finds all bookings that exists
     @GetMapping("/allBookings")
     public Stream<BookingResponseDTO> getBookings() {
         return bookingService.getAllBookings().stream().map(BookingResponseDTO::fromModel);
     }
 
+    // Finds booking by ID
     @GetMapping("/{id}")
     public Optional<Booking> getBookingById(@PathVariable UUID id) {
         return bookingService.getBookingById(id);
     }
 
+    // Removes a booking by entering the ID of it
     @DeleteMapping("/cancelBooking/{id}")
     public ResponseEntity<?> deleteBooking(@PathVariable UUID id){
         try {
