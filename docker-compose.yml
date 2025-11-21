@@ -1,11 +1,13 @@
 #version: "3.8"
 
+# Start the service shenanigans
 services:
   #  Containers
   postgres:
     image: postgres:15-alpine
 #    ports:
 #      - "5432:5432"
+# Fetches the values from the .env file
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -15,6 +17,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - app-network
+# Runs a healthchek of things to make sure it won't explode
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -22,12 +25,16 @@ services:
       retries: 5
     restart: unless-stopped
 
+# nginx established here
   nginx:
     image: nginx:alpine
     ports:
       - "${NGINX_PORT:-80}:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+# I totally misunderstood what the instances would be,
+# but I kind of wanted to have status signify where the bookings would go when I figured them out
+# like "PENDING" goes to 1, "CONFIRMED" goes to 2, "CANCELLED" goes to 3
     depends_on:
       - booking_app1
       - booking_app2
@@ -35,6 +42,7 @@ services:
       - app-network
     restart: unless-stopped
 
+# First instance, using the least occupied one to enter values
   booking_app1:
     build: .
     #  image: springdemo:1.0
@@ -51,6 +59,7 @@ services:
       - app-network
     restart: unless-stopped
 
+  # Second instance, using the least occupied one to enter values
   booking_app2:
     build: .
     #  image: springdemo:1.0

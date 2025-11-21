@@ -7,6 +7,7 @@ import stellunia.Bookings_App.bookings.Booking;
 
 import java.time.LocalDateTime;
 
+// The DTO response object that bookings utilise
 @Data
 @AllArgsConstructor
 public class BookingResponseDTO extends RepresentationModel<BookingResponseDTO> {

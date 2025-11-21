@@ -18,6 +18,7 @@ public class BookingService {
     @Autowired
     private final BookingRepository bookingRepository;
 
+    // Sets the ID for the booking and returns it for the database to save
     @Transactional
     public Booking createBooking(Booking booking) throws IOException {
 /*        Booking booking = new Booking(bookingsName, bookingsEmail,
@@ -32,6 +33,7 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    // Replaces all entries of a booking, but retains the ID
     @Transactional
     public Booking updateBooking(UUID id, Booking updatedBooking) {
         return bookingRepository.findByBookingId(id)
@@ -56,18 +58,22 @@ public class BookingService {
                 .orElseThrow(() -> new RuntimeException("Booking not found with ID: " + id));
     }
 
+    // Finds booking by ID
     public Optional<Booking> getBookingById(UUID id) {
         return bookingRepository.findByBookingId(id);
     }
 
+    // Finds bookings by name of person who booked them
     public List<Booking> getNameBookings(String bookingName) {
         return bookingRepository.findByBookingName(bookingName);
     }
 
+    // Returns all existing bookings
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
     }
 
+    // Removes booking by entering its ID
     public void deleteBooking(UUID id){
         Booking booking = bookingRepository.findById(id).orElseThrow(() ->new RuntimeException("Booking not found."));
         bookingRepository.delete(booking);

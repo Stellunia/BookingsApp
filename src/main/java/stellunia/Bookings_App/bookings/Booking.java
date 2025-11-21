@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// This handles the booking entry itself
 //@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "bookings")
@@ -52,7 +53,7 @@ public class Booking {
     @Override
     public String toString() { return super.toString(); }
 
-/*  #Should it have the ability to book from a date to another? Use these, Ig
+/*  #Should it have the ability to book from a date to another? Use these, Ig - nah
     @Column(name = "bookings_from_date")
     private String bookingsFromDate;
 
